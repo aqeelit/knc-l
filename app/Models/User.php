@@ -37,6 +37,11 @@ class User extends Authenticatable
         return $this->belongsToMany(Role::class);
     }
 
+    public function level()
+    {
+        return $this->hasOne('App\Models\Level', 'user_id', 'id');
+    }
+
     /**
     * @param string|array $roles
     */

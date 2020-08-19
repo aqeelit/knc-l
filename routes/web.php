@@ -54,6 +54,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('payment/success', 'PaymentController@getSuccess')->name('payment.success');
     Route::get('payment/failure', 'PaymentController@getFailure')->name('payment.failure');
 
+    Route::get('level-start', 'LevelController@index')->name('level.start');
+    Route::post('level-exam', 'LevelController@exam')->name('level.exam');
 
 
     //Functions accessed by only students
@@ -74,8 +76,6 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('course-enroll-api/{course_slug}/{lecture_slug}/{is_sidebar}', 'CourseController@courseEnrollAPI');
         Route::get('readPDF/{file_id}', 'CourseController@readPDF');
 
-
-        Route::get('level-start', 'LevelController@index')->name('level.start');
 
     });
 
