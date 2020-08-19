@@ -54,4 +54,21 @@ class LevelController extends Controller
      //  echo $level->age . " " . $user_email ;
     }
 
+    public function calculate(Request $request)
+    {
+
+        $sum =  $request->input('q1');
+        $sum += $request->input('q2');
+        $sum += $request->input('q3');
+        $sum += $request->input('q4');
+        $sum += $request->input('q5');
+        $sum += $request->input('q6');
+        $sum += $request->input('q7');
+        $sum += $request->input('q8');
+        $sum += $request->input('q9');
+        $sum += $request->input('q10');
+
+         echo $sum  ;
+    }
+
 }

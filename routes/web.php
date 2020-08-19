@@ -56,6 +56,7 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get('level-start', 'LevelController@index')->name('level.start');
     Route::post('level-exam', 'LevelController@exam')->name('level.exam');
+    Route::post('level-calculate', 'LevelController@calculate')->name('level.calculate');
 
 
     //Functions accessed by only students
