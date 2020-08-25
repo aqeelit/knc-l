@@ -4,7 +4,7 @@
         <h2>The Page of exam</h2>
         <form id="examForm" class="form-horizontal" method="POST" action="{{ route('level.calculate') }}">
             {{ csrf_field() }}
-            <input type="hidden" name="user_id" value="{{ $user_id }}">
+            <input type="hidden" name="level_id"  value="{{$level_id}}">
             <p>Please select your gender:</p>
             <input type="radio" id="q11" name="q1" value="{{'1'}}">
             <label for="male">Male</label><br>

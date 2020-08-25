@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+require_once 'knn/vendor/autoload.php';
+use Phpml\Classification\KNearestNeighbors;
 
 
 use App\Http\Controllers\Controller;
@@ -26,7 +28,21 @@ class LevelController extends Controller
 
     public function index(){
         $user_id = \Auth::user()->id;
-        return view('level.start')->with('user_id',$user_id);
+        $user_email = \Auth::user()->email;
+
+        $level = Level::where('email', '=', $user_email)->first();
+        if ($level === null){
+            return view('level.start')->with('user_id',$user_id);
+        }else{
+            $level_id = $level->id;
+            if ($level->attempts < 3 ) {
+                return view('level.exam')->with('level_id', $level_id);
+            }else{
+                return view('level.cant');
+            }
+        }
+
+
     }
 
     public function exam(Request $request){
@@ -37,17 +53,18 @@ class LevelController extends Controller
 
 
 
-        $user_email = $user->email ;
+            $user_email = $user->email;
 
-        $level->user_id = $user_id;
-        $level->email = $user_email ;
-        $level->age =  $request->input('age');
-        $level->experience  = $request->input('experience');
+            $level->user_id = $user_id;
+            $level->email = $user_email;
+            $level->age = $request->input('age');
+            $level->experience = $request->input('experience');
 
 
-        $level->save();
+            $level->save();
+            $level_id = $level->id;
 
-       return view('level.exam')->with('user_id',$user_id);
+            return view('level.exam')->with('level_id',$level_id);
 
         // var_dump($level);
 
@@ -56,6 +73,9 @@ class LevelController extends Controller
 
     public function calculate(Request $request)
     {
+
+        $level_id = $request->input('level_id');
+        $level = Level::find($level_id);
 
         $sum =  $request->input('q1');
         $sum += $request->input('q2');
@@ -68,7 +88,40 @@ class LevelController extends Controller
         $sum += $request->input('q9');
         $sum += $request->input('q10');
 
-         echo $sum  ;
+//         echo $sum ."<br>" ;
+//         echo $level_id;
+
+
+        $level->grade = $sum ;
+
+        if($level->attempts == '0'){
+            $level->attempts = '1';
+           // $level->save();
+        }elseif ($level->attempts == '1'){
+            $level->attempts = '2';
+           // $level->update();
+        }elseif ($level->attempts == '2'){
+            $level->attempts = '3';
+           // $level->update();
+        }
+
+
+
+        $samples = [[2 ,22, 8], [1,25,10], [3 ,23, 7], [ 3,28, 2], [1 ,30, 10], [3,20,6]];
+        $labels = ['level 1', 'level 1', 'level 2', 'level 2', 'level 1', 'level 2'];
+
+        $classifier = new KNearestNeighbors();
+        $classifier->train($samples, $labels);
+
+        $prediction = $classifier->predict([$level->attempts,$level->age ,$level->grade]);
+        // echo $prediction;
+
+        $level->k_level = $prediction;
+
+        $level->Update();
+
+        return view('level.end');
+
     }
 
 }
