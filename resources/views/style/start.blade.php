@@ -8,7 +8,7 @@
             </div>
             <div class="col-xl-6 offset-xl-0 col-lg-6 offset-lg-0 col-md-8 offset-md-2">
                 <div class="rightRegisterForm">
-                    <form id="loginForm" class="form-horizontal" method="POST" action="{{ route('style.exam') }}">
+                    <form id="loginForm" class="form-horizontal" method="POST" action="{{ route('style.index') }}">
                         {{ csrf_field() }}
                         <div class="p-4">
                             <input type="hidden" name="user_id" value="{{ $user_id }}">

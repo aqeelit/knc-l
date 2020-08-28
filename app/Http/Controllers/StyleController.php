@@ -26,43 +26,83 @@ class StyleController extends Controller
 
     public function index(){
         $user_id = \Auth::user()->id;
-        $user_email = \Auth::user()->email;
 
-        $level = Level::where('email', '=', $user_email)->first();
-        if ($level === null){
-            return view('level.start')->with('user_id',$user_id);
+        $style = Style::where('user_id', '=', $user_id)->first();
+        if ($style === null){
+            return view('style.exam')->with('user_id',$user_id);
         }else{
-            $level_id = $level->id;
-            if ($level->attempts < 3 ) {
-                return view('level.exam')->with('level_id', $level_id);
-            }else{
-                return view('level.cant');
+            $user_id = $style->user_id;
+            return view('style.exam')->with('user_id',$user_id);  //  return view('style.cant');
             }
         }
 
 
-    }
-
     public function exam(Request $request){
 
         $user_id = $request->input('user_id');
-        $level = new level();
-        $user = User::find($user_id);
+        $style = new style();
+
+
+        $style->user_id = $user_id;
+        $all_values = array_merge($request->all(), ['index' => 'value']);
+
+
+         $type = array_count_values($all_values);
+         print_r($type);
+
+         // activist & reflector
+
+         if ($type['activist'] > $type['reflector'] ){
+             $activist = $type['activist'] - $type['reflector'];
+             $reflector = 0 ;
+         }else{
+             $reflector = $type['reflector'] - $type['activist'];
+             $activist = 0 ;
+         }
+
+         $style->activist = $activist ;
+         $style->reflector = $reflector ;
+
+        // sensing & intuitive
+
+         if ($type['sensing'] > $type['intuitive'] ){
+             $sensing = $type['sensing'] - $type['intuitive'];
+             $intuitive = 0 ;
+         }else{
+             $intuitive = $type['intuitive'] - $type['sensing'];
+             $sensing = 0 ;
+         }
+
+        $style->sensing = $sensing ;
+        $style->intuitive = $intuitive ;
+
+
+        // visual & verbal
+
+        if ($type['visual'] > $type['verbal'] ){
+            $visual = $type['visual'] - $type['verbal'];
+            $verbal = 0 ;
+        }else{
+            $verbal = $type['verbal'] - $type['visual'];
+            $visual = 0 ;
+        }
+
+        $style->visual = $visual ;
+        $style->verbal = $verbal ;
 
 
 
-        $user_email = $user->email;
-
-        $level->user_id = $user_id;
-        $level->email = $user_email;
-        $level->age = $request->input('age');
-        $level->experience = $request->input('experience');
 
 
-        $level->save();
-        $level_id = $level->id;
 
-        return view('level.exam')->with('level_id',$level_id);
+
+
+
+
+       // $style->save();
+       // $style_id = $style->id;
+
+       // return view('style.end')->with('style_id',$style_id);
 
         // var_dump($level);
 
