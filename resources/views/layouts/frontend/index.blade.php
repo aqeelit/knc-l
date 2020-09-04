@@ -69,8 +69,14 @@
                     <a class="dropdown-item" href="{{ route('my.courses') }}" >
                         <i class="fa fa-sign-out-alt"></i> My Courses
                     </a>
-                    <a class="dropdown-item" href="{{ route('level.start') }}" >
-                            <i class="fa fa-sign-out-alt"></i> K-level exam
+                    <a class="dropdown-item" href="{{ route('command') }}" >
+                        <i class="fa fa-sign-out-alt"></i> Recommendation
+                    </a>
+                    <a class="dropdown-item" href="<?php echo e(route('level.start')); ?>" >
+                        <i class="fa fa-sign-out-alt"></i> Knowledge level exam
+                    </a>
+                    <a class="dropdown-item" href="<?php echo e(route('style.start')); ?>" >
+                        <i class="fa fa-sign-out-alt"></i> learning style exam
                     </a>
                     <a class="dropdown-item" href="{{ route('logOut') }}" >
                         <i class="fa fa-sign-out-alt"></i> Logout

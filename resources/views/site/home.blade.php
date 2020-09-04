@@ -18,7 +18,7 @@
             $tabs = array('latestTab' => 'Latest Courses',
                           'freeTab' => 'Free Courses',
                           'discountTab' => 'Discount Courses',
-                        );
+                         );
         ?>
         <nav class="clearfix secondary-nav seperator-head">
             <ul class="secondary-nav-ul list mx-auto nav">

@@ -31,9 +31,8 @@ class StyleController extends Controller
         if ($style === null){
             return view('style.exam')->with('user_id',$user_id);
         }else{
-            $user_id = $style->user_id;
-            return view('style.exam')->with('user_id',$user_id);  //  return view('style.cant');
-            }
+            return view('style.cant');
+             }
         }
 
 
@@ -48,7 +47,7 @@ class StyleController extends Controller
 
 
          $type = array_count_values($all_values);
-         print_r($type);
+        // print_r($type);
 
          // activist & reflector
 
@@ -90,75 +89,24 @@ class StyleController extends Controller
         $style->visual = $visual ;
         $style->verbal = $verbal ;
 
+        // sequential & global
 
-
-
-
-
-
-
-
-
-       // $style->save();
-       // $style_id = $style->id;
-
-       // return view('style.end')->with('style_id',$style_id);
-
-        // var_dump($level);
-
-        //  echo $level->age . " " . $user_email ;
-    }
-
-    public function calculate(Request $request)
-    {
-
-        $level_id = $request->input('level_id');
-        $level = Level::find($level_id);
-
-        $sum =  $request->input('q1');
-        $sum += $request->input('q2');
-        $sum += $request->input('q3');
-        $sum += $request->input('q4');
-        $sum += $request->input('q5');
-        $sum += $request->input('q6');
-        $sum += $request->input('q7');
-        $sum += $request->input('q8');
-        $sum += $request->input('q9');
-        $sum += $request->input('q10');
-
-//         echo $sum ."<br>" ;
-//         echo $level_id;
-
-
-        $level->grade = $sum ;
-
-        if($level->attempts == '0'){
-            $level->attempts = '1';
-            // $level->save();
-        }elseif ($level->attempts == '1'){
-            $level->attempts = '2';
-            // $level->update();
-        }elseif ($level->attempts == '2'){
-            $level->attempts = '3';
-            // $level->update();
+        if ($type['sequential'] > $type['global'] ){
+            $sequential = $type['sequential'] - $type['global'];
+            $global = 0 ;
+        }else{
+            $global = $type['global'] - $type['sequential'];
+            $sequential = 0 ;
         }
 
+        $style->sequential = $sequential ;
+        $style->global = $global ;
 
+        $style->save();
+        $style_id = $style->id;
 
-        $samples = [[2 ,22, 8], [1,25,10], [3 ,23, 7], [ 3,28, 2], [1 ,30, 10], [3,20,6]];
-        $labels = ['level 1', 'level 1', 'level 2', 'level 2', 'level 1', 'level 2'];
+        return view('style.end')->with('style_id',$style_id);
 
-        $classifier = new KNearestNeighbors();
-        $classifier->train($samples, $labels);
-
-        $prediction = $classifier->predict([$level->attempts,$level->age ,$level->grade]);
-        // echo $prediction;
-
-        $level->k_level = $prediction;
-
-        $level->Update();
-
-        return view('level.end');
 
     }
 

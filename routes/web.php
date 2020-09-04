@@ -64,6 +64,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('style-calculate', 'StyleController@calculate')->name('style.calculate');
     Route::get('style-end', 'StyleController@calculate')->name('style.end');
 
+    Route::get('command', 'CommandController@index')->name('command');
+
     //Functions accessed by only students
     Route::group(['middleware' => 'role:student'], function () {
 

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Blog;
 use DB;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\ContactAdmin;
 use App\Models\Config;
@@ -52,6 +53,7 @@ class HomeController extends Controller
                     ->where('courses.price', 0)
                     ->get();
 
+
         $discountTab_courses = DB::table('courses')
                     ->select('courses.*', 'instructors.first_name', 'instructors.last_name')
                     ->selectRaw('AVG(course_ratings.rating) AS average_rating')
@@ -71,7 +73,7 @@ class HomeController extends Controller
                         ->limit(8)
                         ->get();
                         
-        return view('site/home', compact('latestTab_courses', 'freeTab_courses', 'discountTab_courses', 'instructors'));
+        return view('site/home', compact('latestTab_courses', 'freeTab_courses', 'discountTab_courses','recommendationTab_courses', 'instructors'));
     }
 
     /**
