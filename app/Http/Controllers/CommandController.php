@@ -6,6 +6,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Models\Course;
 use App\Models\InstructionLevel;
+use http\Message;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Socialite;
 use Auth;
@@ -60,13 +61,22 @@ class CommandController extends Controller
             }
 
 
-        $comma = implode(",", $styleType);
-
 
         $level = Level::where('user_id', '=', $user_id)->first();
         $colevel = InstructionLevel::where('level','=', $level->k_level)->first();
-        $course = Course::where('instruction_level_id','=',$colevel->id)->first();
-        print_r($course);
+        $courses = Course::where('instruction_level_id','=',$colevel->id)->first();
+
+        $keywords = explode(",", $courses->keywords);
+
+        $result= array_intersect($keywords ,$styleType );
+
+        //var_dump($result);
+
+        if(is_null($result)){
+            return view('recommended.null');
+        }else{
+            return view('recommended.course')->with(compact('courses'));
+        }
 
 
 
