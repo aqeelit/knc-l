@@ -63,8 +63,15 @@ class CommandController extends Controller
 
 
         $level = Level::where('user_id', '=', $user_id)->first();
-        $colevel = InstructionLevel::where('level','=', $level->k_level)->first();
-        $courses = Course::where('instruction_level_id','=',$colevel->id)->first();
+
+
+        if(empty($level->k_level)) {
+            return view('recommended.null');
+        }else{
+            $colevel = InstructionLevel::where('level','like', $level->k_level)->first();
+            var_dump($colevel->id);
+            $courses = Course::where('instruction_level_id', '=', $colevel->id)->first();
+
 
         $keywords = explode(",", $courses->keywords);
 
@@ -77,7 +84,7 @@ class CommandController extends Controller
         }else{
             return view('recommended.course')->with(compact('courses'));
         }
-
+       }
 
 
     }

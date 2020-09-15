@@ -108,7 +108,7 @@ class LevelController extends Controller
 
 
         $samples = [[2 ,22, 8], [1,25,10], [3 ,23, 7], [ 3,28, 2], [1 ,30, 10], [3,20,6]];
-        $labels = ['level 1', 'level 1', 'level 2', 'level 2', 'level 1', 'level 2'];
+        $labels = ['introductory', 'introductory', 'intermediate', 'intermediate', 'introductory', 'intermediate'];
 
         $classifier = new KNearestNeighbors();
         $classifier->train($samples, $labels);
