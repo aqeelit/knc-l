@@ -116,6 +116,8 @@ class LevelController extends Controller
         $prediction = $classifier->predict([$level->attempts,$level->age ,$level->grade]);
         // echo $prediction;
 
+        
+
         $level->k_level = $prediction;
 
         $level->Update();
